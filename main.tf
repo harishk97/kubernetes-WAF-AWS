@@ -33,6 +33,7 @@ resource "aws_route_table_association" "rta1" {
 resource "aws_security_group" "k8s-sg" {
   name = "Kubernetes-SG"
   vpc_id = aws_vpc.k8s-vpc.id
+
   ingress {
     description = "HTTP from VPC"
     from_port   = 80
@@ -107,9 +108,11 @@ resource "aws_instance" "master" {
     ami = "ami-0c4596ce1e7ae3e68"
     instance_type = "t2.medium"
     vpc_security_group_ids = [ aws_security_group.k8s-sg.id ]
+    subnet_id = aws_subnet.k8s-subnet.id
     tags = {
       Name = "Master_Node"
     }
+    #user_data = "${file("master-node.sh")}"
   
 }
 
@@ -117,8 +120,10 @@ resource "aws_instance" "worker" {
     ami = "ami-0c4596ce1e7ae3e68"
     instance_type = "t2.medium"
     vpc_security_group_ids = [ aws_security_group.k8s-sg.id ]
+    subnet_id = aws_subnet.k8s-subnet.id
     tags = {
       Name = "Worker_Node-1"
     }
+    #user_data = "${file("worker-node.sh")}"
   
 }
