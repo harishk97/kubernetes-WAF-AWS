@@ -1,25 +1,10 @@
-resource "aws_instance" "master" {
-    ami = "ami-0c4596ce1e7ae3e68"
-    instance_type = "t2.medium"
-    tags = {
-      Name = "Master_Node"
-    }
-  
-}
-
-resource "aws_instance" "worker" {
-    ami = "ami-0c4596ce1e7ae3e68"
-    instance_type = "t2.medium"
-    tags = {
-      Name = "Worker_Node-1"
-    }
-  
-}
-
 resource "aws_vpc" "k8s-vpc" {
   cidr_block = "10.0.0.0/16"
   instance_tenancy = "default"
   enable_dns_hostnames = true
+  tags = {
+    Name = "Kubernetes VPC"
+  }
   
 }
 resource "aws_subnet" "k8s-subnet" {
@@ -115,5 +100,23 @@ resource "aws_security_group" "k8s-sg" {
   tags = {
     Name = "K8s-sg"
   }
+  
+}
+
+resource "aws_instance" "master" {
+    ami = "ami-0c4596ce1e7ae3e68"
+    instance_type = "t2.medium"
+    tags = {
+      Name = "Master_Node"
+    }
+  
+}
+
+resource "aws_instance" "worker" {
+    ami = "ami-0c4596ce1e7ae3e68"
+    instance_type = "t2.medium"
+    tags = {
+      Name = "Worker_Node-1"
+    }
   
 }
