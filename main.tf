@@ -26,7 +26,7 @@ resource "aws_subnet" "k8s-subnet" {
   vpc_id = aws_vpc.k8s-vpc.id
   cidr_block = "10.0.1.0/24"
   availability_zone = "ca-central-1a"
-  map_customer_owned_ip_on_launch = true
+  map_public_ip_on_launch = true
   
 }
 resource "aws_internet_gateway" "k8s-igw" {
