@@ -106,6 +106,7 @@ resource "aws_security_group" "k8s-sg" {
 resource "aws_instance" "master" {
     ami = "ami-0c4596ce1e7ae3e68"
     instance_type = "t2.medium"
+    vpc_security_group_ids = [ aws_security_group.k8s-sg.id ]
     tags = {
       Name = "Master_Node"
     }
@@ -115,6 +116,7 @@ resource "aws_instance" "master" {
 resource "aws_instance" "worker" {
     ami = "ami-0c4596ce1e7ae3e68"
     instance_type = "t2.medium"
+    vpc_security_group_ids = [ aws_security_group.k8s-sg.id ]
     tags = {
       Name = "Worker_Node-1"
     }
