@@ -1,5 +1,6 @@
 pipeline {
     agent any
+    
     environment {
         AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_KEY')
@@ -7,7 +8,15 @@ pipeline {
     }
 
     stages {
-        stage('AWS Infra setup') {
+        stage("Git checkout") {
+            steps{
+                script{
+                    git branch: 'main', url: 'https://github.com/harishk97/kubernetes-WAF-AWS.git'
+                }
+                
+            }
+        }
+        stage('Terraform Version') {
             steps {
                 script{
                     sh 'terraform -v'
@@ -15,42 +24,10 @@ pipeline {
                 
             }
         }
-        stage('Hello') {
+        stage('Initialize terraform') {
             steps {
                 script{
-                    sh 'terraform -v'
-                }
-                
-            }
-        }
-        stage('Hello') {
-            steps {
-                script{
-                    sh 'terraform -v'
-                }
-                
-            }
-        }
-        stage('Hello') {
-            steps {
-                script{
-                    sh 'terraform -v'
-                }
-                
-            }
-        }
-        stage('Hello') {
-            steps {
-                script{
-                    sh 'terraform -v'
-                }
-                
-            }
-        }
-        stage('Hello') {
-            steps {
-                script{
-                    sh 'terraform -v'
+                    sh 'terraform init'
                 }
                 
             }
