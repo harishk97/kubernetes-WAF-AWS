@@ -1,6 +1,6 @@
 resource "aws_key_pair" "awskey" {
   key_name   = "terraform-key" 
-  public_key = file("~/.ssh/id_rsa.pub") 
+  public_key = file("/home/haarish/.ssh/id_rsa.pub") 
 }
 
 resource "aws_vpc" "k8s-vpc" {
@@ -121,7 +121,7 @@ resource "aws_instance" "master" {
     connection {
     type     = "ssh"
     user     = "ubuntu"
-    private_key = file("~/.ssh/id_rsa")
+    private_key = file("/home/haarish/.ssh/id_rsa")
     host     = self.public_ip
   }
     provisioner "file" {
@@ -152,7 +152,7 @@ resource "aws_instance" "worker" {
     connection {
     type     = "ssh"
     user     = "ubuntu"
-    private_key = file("~/.ssh/id_rsa")
+    private_key = file("~/home/haarish/.ssh/id_rsa")
     host     = self.public_ip
   }
     provisioner "file" {
