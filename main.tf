@@ -121,7 +121,7 @@ resource "aws_instance" "master" {
     connection {
     type     = "ssh"
     user     = "ubuntu"
-    private_key = file("/home/haarish/.ssh/id_rsa")
+    private_key = file("/home/haarish/Desktop/aws-cli.pem")
     host     = self.public_ip
   }
     provisioner "file" {
@@ -152,7 +152,7 @@ resource "aws_instance" "worker" {
     connection {
     type     = "ssh"
     user     = "ubuntu"
-    private_key = file("~/home/haarish/.ssh/id_rsa")
+    private_key = file("/home/haarish/Desktop/aws-cli.pem")
     host     = self.public_ip
   }
     provisioner "file" {
