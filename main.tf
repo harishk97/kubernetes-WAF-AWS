@@ -1,6 +1,6 @@
 resource "aws_key_pair" "awskey" {
   key_name   = "terraform-key" 
-  public_key = file("${path.cwd}/.ssh/id_rsa.pub")
+  public_key = file("${path.cwd}/public.pub")
 }
 
 resource "aws_vpc" "k8s-vpc" {
