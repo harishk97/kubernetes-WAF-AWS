@@ -1,3 +1,8 @@
+resource "aws_key_pair" "awskey" {
+  key_name   = "terraform-key" 
+  public_key = file("~/.ssh/id_rsa.pub") 
+}
+
 resource "aws_vpc" "k8s-vpc" {
   cidr_block = "10.0.0.0/16"
   instance_tenancy = "default"
@@ -109,10 +114,29 @@ resource "aws_instance" "master" {
     instance_type = "t2.medium"
     vpc_security_group_ids = [ aws_security_group.k8s-sg.id ]
     subnet_id = aws_subnet.k8s-subnet.id
+    key_name = aws_key_pair.awskey.key_name
     tags = {
       Name = "Master_Node"
     }
+    connection {
+    type     = "ssh"
+    user     = "ubuntu"
+    private_key = file("~/.ssh/id_rsa")
+    host     = self.public_ip
+  }
+    provisioner "file" {
+    source      = "master-node.sh"
+    destination = "/home/ubuntu/master-script.sh"
+  }
     #user_data = "${file("master-node.sh")}"
+    provisioner "remote-exec" {
+    inline = [
+      "sudo apt-get update",
+      "cd /home/ubuntu",
+      "chmod +x master-script.sh",
+      "sudo sh master-script.sh",
+    ]
+  }
   
 }
 
@@ -121,9 +145,29 @@ resource "aws_instance" "worker" {
     instance_type = "t2.medium"
     vpc_security_group_ids = [ aws_security_group.k8s-sg.id ]
     subnet_id = aws_subnet.k8s-subnet.id
+    key_name = aws_key_pair.awskey.key_name
     tags = {
       Name = "Worker_Node-1"
     }
-    #user_data = "${file("worker-node.sh")}"
+    connection {
+    type     = "ssh"
+    user     = "ubuntu"
+    private_key = file("~/.ssh/id_rsa")
+    host     = self.public_ip
+  }
+    provisioner "file" {
+    source      = "worker-node.sh"
+    destination = "/home/ubuntu/worker-script.sh"
+  }
+    #user_data = "${file("master-node.sh")}"
+    provisioner "remote-exec" {
+    inline = [
+      "sudo apt-get update",
+      "cd /home/ubuntu",
+      "chmod +x worker-script.sh",
+      "sudo sh worker-script.sh",
+    ]
+  }
+    
   
 }
